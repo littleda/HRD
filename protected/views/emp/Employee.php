@@ -12,7 +12,7 @@ echo CHtml::scriptFile('js/jquery-1.11.1.js');
             check = check + 1
             if (check == 1) {
                 if ($("#EmpModels_workgroup").val() == 'อำนวยการ') {
-                    $(".st,.nd,.dv,.ns").remove();
+                    $(".st,.nd,.dv,.ns").remove();                    
                     $("#EmpModels_work").append("<option class=\"gn\" value=\"บริหารทั่วไป\">บริหารทั่วไป</option>");
                     $("#EmpModels_work").append("<option class=\"gn\" value=\"บำบัดน้ำเสีย\">บำบัดน้ำเสีย</option>");
                     $("#EmpModels_work").append("<option class=\"gn\" value=\"งานสนาม\">งานสนาม</option>");

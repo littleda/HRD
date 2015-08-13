@@ -8,6 +8,7 @@ class UserController extends Controller {
 
     function actionLogin() {
         $this->render('Login');
+        
     }
 
     function actionCheck() {
