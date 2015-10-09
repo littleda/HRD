@@ -14,15 +14,19 @@ class EmpController extends Controller {
             }
         }
         $model = new EmpModels;
-        $this->render('Employee', array(
-            'model' => $model,
-        ));
+        if (Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
+            $this->render('Employee', array(
+                'model' => $model,
+            ));
+        } else {
+            $this->redirect('index.php');
+        }
     }
 
     function actionView() {
 
         $criteria = new CDbCriteria(array('condition' => 'active = True',
-            //'order' => "workgroup DESC,work",
+                //'order' => "workgroup DESC,work",
         ));
         $criteria->order = "workgroup DESC,work";
         if (!empty($_POST)) {
@@ -32,7 +36,7 @@ class EmpController extends Controller {
             $criteria->addSearchCondition('empLname', $mysearch, true, 'OR');
             $criteria->addSearchCondition('workgroup', $mysearch, true, 'OR');
             $criteria->addSearchCondition('work', $mysearch, true, 'OR');
-             $criteria->addSearchCondition('active', 'True', true, 'AND');
+            $criteria->addSearchCondition('active', 'True', true, 'AND');
         }
         $model = new CActiveDataProvider('EmpModels', array(
             'criteria' => $criteria,
@@ -45,9 +49,13 @@ class EmpController extends Controller {
             )
         ));
         //$model->criteria = $criteria;
-        $this->render('EmployeeView', array(
-            'model' => $model
-        ));
+        if (Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
+            $this->render('EmployeeView', array(
+                'model' => $model
+            ));
+        } else {
+            $this->redirect('index.php');
+        }
     }
 
     function actionInsertUpdate($id = NULL) {
@@ -125,14 +133,17 @@ class EmpController extends Controller {
                 $this->redirect(array('View'));
             }
         }
-
-        $this->render('Employee', array(
-            'model' => $getModel
-        ));
+        if (Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
+            $this->render('Employee', array(
+                'model' => $getModel
+            ));
+        } else {
+            $this->redirect('index.php');
+        }
     }
 
     function actioncancle($id = NULL) {
-        if (!empty($id)) {
+        if (!empty($id)&&Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
 //            $getModel = EmpModels::model()->findByPk($id);
 //            $getModel->active = 'False';
             EmpModels::model()->updateByPk($id, array('active' => 'False'));
@@ -142,7 +153,7 @@ class EmpController extends Controller {
     }
 
     function actiondelete($id = NULL) {
-        if (!empty($id)) {
+        if (!empty($id)&&Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
             EmpModels::model()->deleteByPk($id);
         }
         $this->redirect(array('View'));

@@ -4,7 +4,7 @@
         echo CHtml::form();
         echo CHtml::textField('mysearch', '', array('id' => 'mysearch',
             'width' => 100,
-            'placeholder' => "ค้นหาตามเรื่องการประชุม/เลขที่หนังสือ",
+            'placeholder' => "ค้นหาตาม ชื่อผู้เข้าประชุม/เรื่องการประชุม/เลขที่หนังสือ",
             'class' => 'form-control',
             'maxlength' => 100));
         echo CHtml::label('', '');

@@ -18,7 +18,7 @@ $sql = "SELECT usernames FROM user WHERE id ='" . $id . "' and passwords = '" . 
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_array($result);
 if (empty($row)) {
-    echo $id."-".$q."<font color=\"red\"><i>รหัสผ่านไม่ตรงกับที่บันทึกไว้</i></font>";
+    echo "<font color=\"red\"><i>รหัสผ่านไม่ตรงกับที่บันทึกไว้</i></font>";
     //echo $q;
 }
 if (!empty($row)) {

@@ -8,7 +8,6 @@ class UserController extends Controller {
 
     function actionLogin() {
         $this->render('Login');
-        
     }
 
     function actionCheck() {
@@ -38,23 +37,47 @@ class UserController extends Controller {
         $this->redirect(array('Login'));
     }
 
-    function actionInsert($id = NULL) {
+    function actionUpdate($id = NULL) {
         if (!empty($id)) {
             $model = UserModels::model()->findByPk($id);
+
+            if (!empty($_POST['UserModels'])) {
+                $model->_attributes = $_POST['UserModels'];
+                if (empty($model->fullname)) {
+                    echo "<script type=\"text/javascript\"> alert(\"ยังใส่ข้อมูลไม่ครบนะจ๊ะ\");</script>";
+                    $this->render('User', array(
+                        'model' => $model,
+                        'id' => $id
+                    ));
+                    exit(0);
+                }
+                $ufind = UserModels::model()->findByPk($id);
+                if ((empty($model->passwords)) || (md5($ufind->passwords) == md5($model->passwords))) {
+                    $model->passwords = $ufind->passwords;
+                } else {
+                    $model->passwords = md5($model->passwords);
+                }
+
+                if ($model->save()) {
+                    //echo "<script type=\"text/javascript\"> alert(\"แก้ไขข้อมูลสำเร็จ\");</script>";
+                    $this->redirect('index.php');
+                    exit(0);
+                }
+            }
+            $this->render('User', array(
+                'model' => $model
+            ));
         }
-        $this->render('User', array(
-            'model' => $model
-        ));
     }
 
     function actionAdduser() {
         $model = new UserModels;
         if (!empty($_POST['UserModels'])) {
-      //       $character = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+            //       $character = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
             $model = new UserModels();
             $model->_attributes = $_POST['UserModels'];
             $pass[] = str_split($model->passwords);
-           // echo "<script type=\"text/javascript\"> alert($pass[]);</script>";
+            // echo "<script type=\"text/javascript\"> alert($pass[]);</script>";
             if (empty($model->usernames) || empty($model->passwords) || empty($model->fullname)) {
                 echo "<script type=\"text/javascript\"> alert(\"ยังใส่ข้อมูลไม่ครบนะจ๊ะ\");</script>";
                 $this->render('User', array(
@@ -87,23 +110,49 @@ class UserController extends Controller {
                 }
             }
         }
-
-
-        $this->render('User', array(
-            'model' => $model,
-        ));
+        if (Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
+            $this->render('User', array(
+                'model' => $model,
+            ));
+        } else {
+            $this->redirect('index.php');
+        }
     }
 
-    function actionView($id) {
+    function actionView($id = null) {
         $model = new CActiveDataProvider('UserModels');
-
-        // $user=UserModels::model()->findByPk($id);
         $this->render('UserView', array(
             'model' => $model,
             'id' => $id,
         ));
     }
 
+    function actionEdit($id = null) {
+        if (!empty($id)) {
+            $check = UserModels::model()->findByPk($id);
+            if ($check->active == 'False') {
+                $check->active = 'True';
+            } else {
+                $check->active = 'False';
+            }
+            if ($check->save()) {
+                $this->redirect('index.php?r=user/Edit');
+            }
+        }
+        //$model = new CActiveDataProvider('UserModels');
+        $this->render('Edituser');
+        // $this->redirect(array('View'));
+    }
+
+    function actionclear($id = NULL) {
+        if (!empty($id)&&Yii::app()->session["user_type_login"] == 'ADMINISTRATOR') {
+            UserModels::model()->updateByPk($id, array('passwords' => md5('1234')));
+            echo "<script type=\"text/javascript\"> alert(\"เคลียร์รหัสผ่านสำเร็จ\");</script>";
+        }
+        
+        // $model = new CActiveDataProvider('UserModels');
+        $this->render('Edituser');
+    }
 }
 
 ?>

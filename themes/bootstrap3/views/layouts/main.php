@@ -99,7 +99,7 @@
                             $attributes ["usernames"] = Yii::app()->session["member_user_login"];
                             $models = UserModels::model()->findByAttributes($attributes);
                             ?>
-                            <a onclick="javascript:return confirm('ต้องการแก้ไขข้อมูลผู้ใช้?')"href="index.php?r=user/Insert&id=<?php echo $models->id; ?>"> <p class="btn btn-warning">
+                            <a onclick="javascript:return confirm('ต้องการแก้ไขข้อมูลผู้ใช้?')"href="index.php?r=user/Update&id=<?php echo $models->id; ?>"> <p class="btn btn-warning">
                                     <img src="images/admin.png" width="20">
                                     <?php echo Yii::app()->session["member_fullname"] ?>
                                 </p></a> <!-- สร้างปุ่มชื่อนามสกุล เมื่อ login -->

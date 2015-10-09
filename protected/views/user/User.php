@@ -88,8 +88,8 @@
                     <?php echo $form->labelEx($model, 'changepassword'); ?>
                 </div>
                 <div class="col-md-3">
-                    <input id="oldpass" type="password"  placeholder="รหัสผ่านเก่า" onkeyup="checkpass(this.value)">
-                    <input type="password" id="newpass" placeholder="รหัสผ่านใหม่"  style="background: rgb(221, 221, 221);" readonly>
+                    <input id="oldpass" type="password"  placeholder="รหัสผ่านเก่า" pattern="[a-zA-Z0-9]{4,}$" data-toggle="tooltip" data-placement="right" title="ต้องเป็นอักษรภาษาอังกฤษ หรือ ตัวเลข ไม่น้อยกว่า 4 ตัว" onkeyup="checkpass(this.value)">
+                    <input type="password" id="newpass" placeholder="รหัสผ่านใหม่" pattern="[a-zA-Z0-9]{4,}$" data-toggle="tooltip" data-placement="right" title="ต้องเป็นอักษรภาษาอังกฤษ หรือ ตัวเลข ไม่น้อยกว่า 4 ตัว" style="background: rgb(221, 221, 221);" readonly>
                     <?php echo $form->hiddenField($model, 'passwords'); ?>
                 </div>
                 <div class="col-md-4 " id="txtHint"></div>
@@ -99,7 +99,7 @@
                     <?php echo $form->labelEx($model, 'password'); ?>
                 </div>
                 <div class="col-md-3">
-                    <?php echo $form->passwordField($model, 'passwords'); ?>
+                    <?php echo $form->passwordField($model, 'passwords', array('pattern' => '[a-zA-Z0-9]{4,}$', 'placeholder' => 'A-Z,a-z,0-9 ไม่น้อยกว่า4ตัว', 'data-toggle' => 'tooltip', 'data-placement' => 'right', 'title' => 'ต้องเป็นอักษรภาษาอังกฤษ หรือ ตัวเลข ไม่น้อยกว่า 4 ตัว')); ?>
                 </div> 
             <?php } ?>
         </div><br>
